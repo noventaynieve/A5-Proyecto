@@ -1,0 +1,16 @@
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item has-text-weight-bold" href="{{ url_for('users.user_list') }}">CRUD Usuarios</a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-end">
+      {% if session.get('user_id') %}
+        <a class="navbar-item" href="{{ url_for('users.profile', id=session['user_id']) }}">Mi Perfil ({{ session['username']|capitalize }})</a>
+        <a class="navbar-item is-light" href="{{ url_for('users.logout') }}">Cerrar Sesión</a>
+      {% else %}
+        <a class="navbar-item" href="{{ url_for('users.login') }}">Iniciar Sesión</a>
+        <a class="navbar-item" href="{{ url_for('users.register') }}">Registrarse</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
