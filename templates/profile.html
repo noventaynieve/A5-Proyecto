@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
-
-{% block title %}Perfil de Usuario{% endblock %}
+{% block title %}Perfil{% endblock %}
 
 {% block content %}
-<div class="card">
-  <div class="card-content">
-    <p class="title">{{ user.username|capitalize }}</p>
-    <p class="subtitle">{{ user.email }}</p>
-  </div>
-  {% if session.get('user_id') == user.id %}
-  <footer class="card-footer">
-    <a href="{{ url_for('users.edit_profile', id=user.id) }}" class="card-footer-item">Editar Perfil</a>
-    <form action="{{ url_for('users.delete_user', id=user.id) }}" method="POST" class="card-footer-item p-0" onsubmit="return confirm('¿Seguro que deseas eliminar tu cuenta?');">
-        <button type="submit" class="button is-danger is-fullwidth is-radiusless">Eliminar Cuenta</button>
+<h2>Perfil de {{ user.username }}</h2>
+<p><strong>ID:</strong> {{ user.id }}</p>
+<p><strong>Usuario:</strong> {{ user.username }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+
+{% if session.get('user_id') == user.id %}
+    <a href="{{ url_for('users.edit_profile', id=user.id) }}">Editar Perfil</a>
+    <br><br>
+    <form action="{{ url_for('users.delete_user', id=user.id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar tu cuenta?');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="color: red;">Eliminar Cuenta</button>
     </form>
-  </footer>
-  {% endif %}
-</div>
+{% endif %}
 {% endblock %}

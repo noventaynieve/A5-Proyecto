@@ -15,13 +15,13 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# / (GET) - Lista de usuarios
-@user_bp.route('/')
+# Lista de usuarios
+@user_bp.route('/users')
 def user_list():
     users = User.query.all()
     return render_template('user_list.html', users=users)
 
-# /register (GET, POST)
+# Registro
 @user_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -42,7 +42,7 @@ def register():
         return redirect(url_for('users.login'))
     return render_template('register.html', form=form)
 
-# /login (GET, POST)
+# Login
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -51,26 +51,26 @@ def login():
         if user and user.password == form.password.data:
             session['user_id'] = user.id
             session['username'] = user.username
-            flash(f'Bienvenido de nuevo, {user.username}!', 'success')
+            flash(f'¡Bienvenido de nuevo, {user.username}!', 'success')
             return redirect(url_for('users.user_list'))
         flash('Credenciales incorrectas. Inténtalo de nuevo.', 'danger')
     return render_template('login.html', form=form)
 
-# /logout
+# Logout
 @user_bp.route('/logout')
 def logout():
     session.clear()
     flash('Has cerrado sesión correctamente.', 'info')
     return redirect(url_for('users.login'))
 
-# /profile/<int:id> (GET)
+# Perfil
 @user_bp.route('/profile/<int:id>')
 @login_required
 def profile(id):
     user = User.query.get_or_404(id)
     return render_template('profile.html', user=user)
 
-# /profile/<int:id>/edit (GET, POST)
+# Editar perfil
 @user_bp.route('/profile/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile(id):
@@ -84,11 +84,12 @@ def edit_profile(id):
         user.username = form.username.data
         user.email = form.email.data
         db.session.commit()
+        session['username'] = user.username
         flash('Perfil actualizado con éxito.', 'success')
         return redirect(url_for('users.profile', id=user.id))
     return render_template('edit_profile.html', form=form, user=user)
 
-# /profile/<int:id>/delete (POST)
+# Eliminar usuario
 @user_bp.route('/profile/<int:id>/delete', methods=['POST'])
 @login_required
 def delete_user(id):

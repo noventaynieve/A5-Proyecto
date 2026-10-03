@@ -1,16 +1,14 @@
-<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item has-text-weight-bold" href="{{ url_for('users.user_list') }}">CRUD Usuarios</a>
-  </div>
-  <div class="navbar-menu">
-    <div class="navbar-end">
-      {% if session.get('user_id') %}
-        <a class="navbar-item" href="{{ url_for('users.profile', id=session['user_id']) }}">Mi Perfil ({{ session['username']|capitalize }})</a>
-        <a class="navbar-item is-light" href="{{ url_for('users.logout') }}">Cerrar Sesión</a>
-      {% else %}
-        <a class="navbar-item" href="{{ url_for('users.login') }}">Iniciar Sesión</a>
-        <a class="navbar-item" href="{{ url_for('users.register') }}">Registrarse</a>
-      {% endif %}
+<nav>
+    <a href="{{ url_for('users.user_list') }}" class="brand">AppManager</a>
+    <div class="nav-links">
+        {% if session.get('user_id') %}
+            <span>Hola, <strong>{{ session.get('username') }}</strong></span>
+            <a href="{{ url_for('users.profile', id=session.get('user_id')) }}">Mi Perfil</a>
+            <a href="{{ url_for('users.user_list') }}">Usuarios</a>
+            <a href="{{ url_for('users.logout') }}">Cerrar Sesión</a>
+        {% else %}
+            <a href="{{ url_for('users.login') }}">Iniciar Sesión</a>
+            <a href="{{ url_for('users.register') }}" class="btn btn-primary" style="padding: 0.4rem 1rem; color: white;">Registrarse</a>
+        {% endif %}
     </div>
-  </div>
 </nav>

@@ -1,31 +1,15 @@
 {% extends 'base.html' %}
-
-{% block title %}Lista de Usuarios{% endblock %}
+{% block title %}Usuarios{% endblock %}
 
 {% block content %}
-<h1 class="title">Usuarios Registrados</h1>
-<table class="table is-fullwidth is-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Correo</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for u in users %}
-        <tr>
-            <td>{{ u.id }}</td>
-            <td>{{ u.username|capitalize }}</td>
-            <td>{{ u.email }}</td>
-            <td>
-                <a href="{{ url_for('users.profile', id=u.id) }}" class="button is-small is-info">Ver Perfil</a>
-            </td>
-        </tr>
-        {% else %}
-        <tr><td colspan="4">No hay usuarios registrados aún.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+<h2>Lista de Usuarios</h2>
+<ul>
+    {% for u in users %}
+        <li>
+            <a href="{{ url_for('users.profile', id=u.id) }}">{{ u.username }}</a> - {{ u.email }}
+        </li>
+    {% else %}
+        <li>No hay usuarios registrados.</li>
+    {% endfor %}
+</ul>
 {% endblock %}
